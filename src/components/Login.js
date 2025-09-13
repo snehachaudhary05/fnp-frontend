@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
+// ✅ No trailing slash in API URL
+const API_BASE = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
+
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
@@ -15,7 +17,9 @@ const Login = ({ onLogin }) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+        credentials: "include", // ✅ important for CORS + cookies
       });
+
       const data = await res.json();
       if (res.ok && data.token) {
         localStorage.setItem("token", data.token);
@@ -68,7 +72,9 @@ const Login = ({ onLogin }) => {
 
   return (
     <div style={containerStyle}>
-      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Xeno FDE Internship Assignment</h2>
+      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
+        Xeno FDE Internship Assignment
+      </h2>
       <form onSubmit={handleSubmit}>
         <label>Email</label>
         <input

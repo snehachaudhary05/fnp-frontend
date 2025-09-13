@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import Chart from "chart.js/auto";
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_BASE = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
+
 
 const Dashboard = ({ token }) => {
   const [metrics, setMetrics] = useState(null);

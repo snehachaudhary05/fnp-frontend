@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
+// ✅ No trailing slash in API URL
+const API_BASE = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
 const Register = ({ onRegister }) => {
   const [email, setEmail] = useState("");
@@ -20,10 +21,12 @@ const Register = ({ onRegister }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           tenantId: "default",
-          name,
           email,
           password,
+          // ✅ only send name if backend supports it
+          name,
         }),
+        credentials: "include", // ✅ match login fetch
       });
 
       const data = await res.json();
